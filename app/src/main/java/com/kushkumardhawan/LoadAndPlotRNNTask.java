@@ -60,7 +60,7 @@ public class LoadAndPlotRNNTask extends AsyncTask<Void, Void, List<VelocityData>
         progressDialog.show();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    //@RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected List<VelocityData> doInBackground(Void... voids) {
 

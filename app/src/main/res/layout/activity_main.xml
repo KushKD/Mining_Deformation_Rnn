@@ -40,7 +40,7 @@
                 android:textSize="18sp"
                 android:layout_weight="1"
                 android:background="@drawable/customborder_dialog"
-                android:text="Select Channel"/>
+                android:text="Select Probe"/>
 
             <Spinner
                 android:id="@+id/channel"

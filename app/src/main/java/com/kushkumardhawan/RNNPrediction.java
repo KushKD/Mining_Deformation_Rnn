@@ -65,7 +65,7 @@ public class RNNPrediction extends AppCompatActivity {
         combinedChart.setDrawOrder(new CombinedChart.DrawOrder[]{
                 CombinedChart.DrawOrder.LINE, CombinedChart.DrawOrder.SCATTER
         });
-        new LoadAndPlotRNNTask(RNNPrediction.this, combinedChart, assetManager, "1001", selectedFileName).execute();
+       // new LoadAndPlotRNNTask(RNNPrediction.this, combinedChart, assetManager, "1001", selectedFileName).execute();
 
 
 
@@ -75,33 +75,33 @@ public class RNNPrediction extends AppCompatActivity {
                 // Handle the selected item change here
                 selectedValue = channel.getSelectedItem().toString();
 
-                if(selectedValue.equalsIgnoreCase("Channel 1")){
+                if(selectedValue.equalsIgnoreCase("Probe 1")){
                     selectedValue ="1001";
                 }
-                if(selectedValue.equalsIgnoreCase("Channel 2")){
+                if(selectedValue.equalsIgnoreCase("Probe 2")){
                     selectedValue ="2001";
                 }
-                if(selectedValue.equalsIgnoreCase("Channel 3")){
+                if(selectedValue.equalsIgnoreCase("Probe 3")){
                     selectedValue ="3001";
                 }
-                if(selectedValue.equalsIgnoreCase("Channel 4")){
+                if(selectedValue.equalsIgnoreCase("Probe 4")){
                     selectedValue ="4001";
                 }
-                if(selectedValue.equalsIgnoreCase("Channel 5")){
+                if(selectedValue.equalsIgnoreCase("Probe 5")){
                     selectedValue ="5001";
                 }
-                if(selectedValue.equalsIgnoreCase("Channel 6")){
+                if(selectedValue.equalsIgnoreCase("Probe 6")){
                     selectedValue ="6001";
                 }
-                if(selectedValue.equalsIgnoreCase("Channel ")){
+                if(selectedValue.equalsIgnoreCase("Probe 7")){
                     selectedValue ="7001";
                 }
-                if(selectedValue.equalsIgnoreCase("Channel 8")){
+                if(selectedValue.equalsIgnoreCase("Probe 8")){
                     selectedValue ="8001";
                 }
                 // Do something with the selected value
                 //Toast.makeText(getApplicationContext(), "Selected: " + selectedValue, Toast.LENGTH_SHORT).show();
-               // new LoadAndPlotRNNTask(RNNPrediction.this, combinedChart, assetManager, "1001", selectedFileName).execute();
+               new LoadAndPlotRNNTask(RNNPrediction.this, combinedChart, assetManager, selectedValue, selectedFileName).execute();
             }
 
             @Override
@@ -132,9 +132,41 @@ public class RNNPrediction extends AppCompatActivity {
         //lineEntries.add(new Entry(specificTimestamp, 0f));
         scatterEntries.add(new Entry(specificTimestamp, 0f));
 
-        LineDataSet lineDataSet = new LineDataSet(lineEntries, "Actual Inverse Velocity");
-        lineDataSet.setColor(Color.parseColor("#2596be"));
-        lineDataSet.setCircleColor(Color.parseColor("#1f77b4"));
+        LineDataSet lineDataSet = new LineDataSet(lineEntries, "Actual Inverse Velocity (1/mm/sec)");
+
+
+//        if(selectedValue.equalsIgnoreCase("1001")){
+            lineDataSet.setColor(Color.parseColor("#2596be"));
+            lineDataSet.setCircleColor(Color.parseColor("#1f77b4"));
+        //}
+//        if(selectedValue.equalsIgnoreCase("2001")){
+//            lineDataSet.setColor(Color.RED);
+//            lineDataSet.setCircleColor(Color.RED);
+//        }
+//        if(selectedValue.equalsIgnoreCase("3001")){
+//            lineDataSet.setColor(Color.GREEN);
+//            lineDataSet.setCircleColor(Color.GREEN);
+//        }
+//        if(selectedValue.equalsIgnoreCase("4001")){
+//            lineDataSet.setColor(Color.BLUE);
+//            lineDataSet.setColor(Color.BLUE);
+//        }
+//        if(selectedValue.equalsIgnoreCase("5001")){
+//            lineDataSet.setColor(Color.MAGENTA);
+//            lineDataSet.setColor(Color.MAGENTA);
+//        }
+//        if(selectedValue.equalsIgnoreCase("6001")){
+//            lineDataSet.setColor(Color.CYAN);
+//            lineDataSet.setColor(Color.CYAN);
+//        }
+//        if(selectedValue.equalsIgnoreCase("7001")){
+//            lineDataSet.setColor(Color.BLACK);
+//            lineDataSet.setColor(Color.BLACK);
+//        }
+//        if(selectedValue.equalsIgnoreCase("8001")){
+//            lineDataSet.setColor(Color.LTGRAY);
+//            lineDataSet.setColor(Color.LTGRAY);
+//        }
 
         ScatterDataSet scatterDataSet = new ScatterDataSet(scatterEntries, "Prediction Failure Point");
         scatterDataSet.setColor(Color.RED);

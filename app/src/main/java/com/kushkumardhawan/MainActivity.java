@@ -77,28 +77,28 @@ public class MainActivity extends AppCompatActivity {
                 // Handle the selected item change here
                  selectedValue = channel.getSelectedItem().toString();
 
-                if(selectedValue.equalsIgnoreCase("Channel 1")){
+                if(selectedValue.equalsIgnoreCase("Probe 1")){
                     selectedValue ="1001";
                 }
-                if(selectedValue.equalsIgnoreCase("Channel 2")){
+                if(selectedValue.equalsIgnoreCase("Probe 2")){
                     selectedValue ="2001";
                 }
-                if(selectedValue.equalsIgnoreCase("Channel 3")){
+                if(selectedValue.equalsIgnoreCase("Probe 3")){
                     selectedValue ="3001";
                 }
-                if(selectedValue.equalsIgnoreCase("Channel 4")){
+                if(selectedValue.equalsIgnoreCase("Probe 4")){
                     selectedValue ="4001";
                 }
-                if(selectedValue.equalsIgnoreCase("Channel 5")){
+                if(selectedValue.equalsIgnoreCase("Probe 5")){
                     selectedValue ="5001";
                 }
-                if(selectedValue.equalsIgnoreCase("Channel 6")){
+                if(selectedValue.equalsIgnoreCase("Probe 6")){
                     selectedValue ="6001";
                 }
-                if(selectedValue.equalsIgnoreCase("Channel ")){
+                if(selectedValue.equalsIgnoreCase("Probe 7")){
                     selectedValue ="7001";
                 }
-                if(selectedValue.equalsIgnoreCase("Channel 8")){
+                if(selectedValue.equalsIgnoreCase("Probe 8")){
                     selectedValue ="8001";
                 }
                 // Do something with the selected value
@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Creating a LineDataSet
-        LineDataSet dataSet = new LineDataSet(entries, "Deformation Data");
+        LineDataSet dataSet = new LineDataSet(entries, "Deformation Data (mm)");
 
         if(selectedValue.equalsIgnoreCase("1001")){
             dataSet.setColor(Color.RED);
