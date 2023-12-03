@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#366988</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="dark_grey">#292929</color>
+    <color name="border_grey">#a9a9a9</color>
+
+    <color name="blue">#0091D7</color>
+    <color name="darkblue">#366988</color>  2D6091
+    <color name="navyblue">#2D6091</color>
+
+    <color name="progress_color">#ef6c00</color>
+
+    <color name="red">#B7171C</color>
+    <color name="green">#668D15</color>
+    <color name="icon_blue">#0C74A6</color>
+
+    <color name="cream">#EDF4F4</color>
+
+    <color name="slide_1">#5197c9</color>
+    <color name="slide_2">#fb9c25</color>
+    <color name="slide_3">#cc7b7b</color>
+    <color name="slide_4">#aa3a3a</color>
+
+    <color name="tutorial_buttonTextColor">#000000</color>
+
+</resources>

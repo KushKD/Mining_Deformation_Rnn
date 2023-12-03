@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:background="@drawable/customborder_dialog"
+        android:orientation="vertical"
+        android:layout_weight="2.5">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:padding="5dp"
+            android:textColor="@color/white"
+            android:background="@color/darkblue"
+            android:text="RNN Predicted Future Points (Dynamic Forecasting)" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/customborder_dialog"
+            android:visibility="gone"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/darkblue"
+                android:textSize="18sp"
+                android:layout_weight="1"
+                android:background="@drawable/customborder_dialog"
+                android:text="Select Channel" />
+
+            <Spinner
+                android:id="@+id/channel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:entries="@array/spinner_channel"
+                android:textColor="@color/darkblue"
+                android:enabled="false"
+                android:gravity="center"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="0.7" >
+
+        <com.github.mikephil.charting.charts.CombinedChart
+            android:id="@+id/combinedChart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:background="#FFFFFF"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:scrollbars="horizontal"
+            android:layout_marginTop="88dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginRight="1dp">
+        </com.github.mikephil.charting.charts.CombinedChart>
+
+    </LinearLayout>
+
+</LinearLayout>
