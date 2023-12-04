@@ -28,7 +28,7 @@ public class SplashScreen extends AppCompatActivity {
             public void run() {
 
 //MainActivity
-                Intent mainIntent = new Intent(SplashScreen.this, DownloadShowFile.class);
+                Intent mainIntent = new Intent(SplashScreen.this, ChooseFile.class);
                 SplashScreen.this.startActivity(mainIntent);
                 SplashScreen.this.finish();
 

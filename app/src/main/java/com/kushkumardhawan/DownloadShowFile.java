@@ -32,11 +32,17 @@ public class DownloadShowFile extends AppCompatActivity implements DownloadFileT
 
 
     CustomDialog CD = new CustomDialog();
-
+    String receivedUrl = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download_show_file);
+
+        // Retrieve the URL from the Intent
+        Intent intent = getIntent();
+        if (intent != null) {
+             receivedUrl = intent.getStringExtra("URL_EXTRA");
+        }
 
         progressBar = findViewById(R.id.progressBar);
         listView = findViewById(R.id.listView);
@@ -48,13 +54,24 @@ public class DownloadShowFile extends AppCompatActivity implements DownloadFileT
 
 
         // Replace the file URL with the actual Google Drive file URL
-        String fileUrl = "https://drive.google.com/uc?export=download&id=1XSQqAqpijfOFd6827p2VztioFItXzZ_A";
+        //https://drive.google.com/file/d/1XSQqAqpijfOFd6827p2VztioFItXzZ_A/view?usp
+        //=sharing
+        //String fileUrl = "https://drive.google.com/uc?export=download&id=1XSQqAqpijfOFd6827p2VztioFItXzZ_A";
+
+        //New URL
+        //https://drive.google.com/file/d/168G9sDAQA-ZHFnkzybLc9bl4TpmIRgCV/view?usp=sharing
+        //String fileUrl = "https://drive.google.com/uc?export=download&id=168G9sDAQA-ZHFnkzybLc9bl4TpmIRgCV";
+
+        //OLD URL
+        //https://drive.google.com/file/d/15zgFa42brcFKZb2H1RVrF_6sARVS2dhS/view?usp=sharing
+        //String fileUrl = "https://drive.google.com/uc?export=download&id=15zgFa42brcFKZb2H1RVrF_6sARVS2dhS";
+
         String destinationDirectory = Environment.getExternalStorageDirectory().getPath() + "/my_directory";
 
         if(!AppStatus.getInstance(DownloadShowFile.this).isOnline()){
             CD.showDialog(DownloadShowFile.this, "Please connect to Internet First if there is a downloading error. \n \nFile Will be automatically Downloaded form the Server. \n \n After Downloading is Completed, the file name will be shown in the list.  \n \n \n Please click the File and Proceed to view the Deformation Charts. \n \n \n Please enjoy your cup of Tea while the downloading is in process.");
             DownloadFileTask downloadTask = new DownloadFileTask(this, this);
-            downloadTask.execute(fileUrl);
+            downloadTask.execute(receivedUrl);
         }else{
             CD.showDialogCloseActivity(DownloadShowFile.this,"Please Connect to Internet and try again.");
         }
