@@ -33,7 +33,7 @@
             android:alwaysRetainTaskState="true"
             android:exported="true"
             android:launchMode="singleTop"
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.Design.Light.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
@@ -58,7 +58,7 @@
             android:alwaysRetainTaskState="true"
             android:exported="true"
             android:launchMode="singleTop"
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.Design.Light.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
     </application>

@@ -2,13 +2,19 @@ package com.kushkumardhawan;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.os.Bundle;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -24,6 +30,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -37,6 +44,10 @@ public class MainActivity extends AppCompatActivity {
 
     Spinner channel;
 
+    private EditText dateOneEditText, timeOneEditText, dateTwoEditText, timeTwoEditText;
+    private Button viewViaTimeStampButton;
+    private Calendar calendar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,12 +60,34 @@ public class MainActivity extends AppCompatActivity {
         rnnFab = findViewById(R.id.rnn);
 
 
+        dateOneEditText = findViewById(R.id.date_one);
+        timeOneEditText = findViewById(R.id.time_one);
+        dateTwoEditText = findViewById(R.id.date_two);
+        timeTwoEditText = findViewById(R.id.time_two);
+
 
         lineChart = findViewById(R.id.lineChart);
         channel = findViewById(R.id.channel);
         AssetManager assetManager = getAssets();
         lineChart.setScaleEnabled(true);
         lineChart.setPinchZoom(true);
+
+        // Set up Calendar instance
+        calendar = Calendar.getInstance();
+
+        // Set onClickListener for Date and Time pickers
+        setDateTimePickerListeners();
+
+        viewViaTimeStampButton = findViewById(R.id.old);
+        viewViaTimeStampButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+
+            }
+        });
 
         rnnFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,10 +134,26 @@ public class MainActivity extends AppCompatActivity {
                 if(selectedValue.equalsIgnoreCase("Probe 8")){
                     selectedValue ="8001";
                 }
-                // Do something with the selected value
-                //Toast.makeText(getApplicationContext(), "Selected: " + selectedValue, Toast.LENGTH_SHORT).show();
-                new LoadAndPlotDataTask(MainActivity.this, lineChart, assetManager, selectedValue, selectedFileName).execute();
-            }
+
+                // Get the values and add them to the list
+                String fromDate = getFormattedDateTime(dateOneEditText, timeOneEditText);
+                String toDate = getFormattedDateTime(dateTwoEditText, timeTwoEditText);
+
+                if(!fromDate.isEmpty() && !toDate.isEmpty()){
+
+                    /**
+                     * pass the date and Time too
+                     */
+                    Toast.makeText(MainActivity.this, fromDate + "\t" + toDate, Toast.LENGTH_SHORT).show();
+                    System.out.println(fromDate+":00");
+                    System.out.println(toDate+":00");
+                    new LoadAndPlotDataTaskDateTime(MainActivity.this, lineChart, assetManager, selectedValue, selectedFileName, fromDate+":00", toDate+":00").execute();
+
+                }else{
+                    new LoadAndPlotDataTask(MainActivity.this, lineChart, assetManager, selectedValue, selectedFileName).execute();
+                }
+
+ }
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
@@ -139,6 +188,80 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void setDateTimePickerListeners() {
+        dateOneEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePicker(dateOneEditText);
+            }
+        });
+
+        timeOneEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTimePicker(timeOneEditText);
+            }
+        });
+
+        dateTwoEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePicker(dateTwoEditText);
+            }
+        });
+
+        timeTwoEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTimePicker(timeTwoEditText);
+            }
+        });
+    }
+
+    private void showDatePicker(final EditText editText) {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        calendar.set(year, month, dayOfMonth);
+                        updateEditText(editText);
+                    }
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+        );
+        datePickerDialog.show();
+    }
+
+    private void showTimePicker(final EditText editText) {
+        TimePickerDialog timePickerDialog = new TimePickerDialog(
+                this,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        calendar.set(Calendar.MINUTE, minute);
+                        updateEditText(editText);
+                    }
+                },
+                calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE),
+                false
+        );
+        timePickerDialog.show();
+    }
+
+    private void updateEditText(EditText editText) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        if (editText == dateOneEditText || editText == dateTwoEditText) {
+            editText.setText(dateFormat.format(calendar.getTime()));
+        } else if (editText == timeOneEditText || editText == timeTwoEditText) {
+            editText.setText(timeFormat.format(calendar.getTime()));
+        }
+    }
 
 
     // Method to plot the deformation data in the LineChart
@@ -230,7 +353,27 @@ public class MainActivity extends AppCompatActivity {
         return 0;
     }
 
+    private String getFormattedDateTime(EditText dateEditText, EditText timeEditText) {
+        String dateText = dateEditText.getText().toString();
+        String timeText = timeEditText.getText().toString();
 
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+
+            Calendar dateTimeCalendar = Calendar.getInstance();
+            dateTimeCalendar.setTime(dateFormat.parse(dateText));
+            dateTimeCalendar.set(Calendar.HOUR_OF_DAY, timeFormat.parse(timeText).getHours());
+            dateTimeCalendar.set(Calendar.MINUTE, timeFormat.parse(timeText).getMinutes());
+            // Set seconds to 00
+            dateTimeCalendar.set(Calendar.SECOND, 0);
+
+            return dateFormat.format(dateTimeCalendar.getTime()) + " " + timeFormat.format(dateTimeCalendar.getTime());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
 
 
 }
