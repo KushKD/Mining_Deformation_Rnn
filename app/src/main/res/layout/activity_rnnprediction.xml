@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/customborder_dialog"
         android:orientation="vertical"
-        android:layout_weight="2.5" >
+        android:layout_weight="2" >
 
         <TextView
             android:layout_width="match_parent"
@@ -23,11 +23,11 @@
             android:padding="5dp"
             android:textColor="@color/white"
             android:background="@color/darkblue"
-            android:text="RNN Predicted Future Points (Dynamic Forecasting)" />
+            android:text="RNN Predicted Future Points (Dynamic Forecasting)"/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@drawable/customborder_dialog"
             android:orientation="horizontal">
 
@@ -53,6 +53,112 @@
                 android:layout_weight="1"/>
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/customborder_dialog"
+            android:orientation="horizontal">
+
+            <!-- Date Time Picker 1 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top|center_horizontal|center_vertical"
+                    android:textStyle="bold"
+                    android:textColor="@color/green"
+                    android:textSize="18sp"
+                    android:background="@drawable/customborder_dialog"
+                    android:text="From Date Time"/>
+
+                <!-- Date EditText -->
+                <EditText
+                    android:id="@+id/date_one"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Select Date"
+                    android:focusable="false"
+                    android:inputType="none"
+                    android:clickable="true"
+                    android:background="?android:attr/editTextBackground"/>
+
+                <!-- Time EditText -->
+                <EditText
+                    android:id="@+id/time_one"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:hint="Select Time"
+                    android:focusable="false"
+                    android:inputType="none"
+                    android:clickable="true"
+                    android:background="?android:attr/editTextBackground"/>
+
+
+
+            </LinearLayout>
+
+            <!-- Date Time Picker 2 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top|center_horizontal|center_vertical"
+                    android:textStyle="bold"
+                    android:textColor="@color/green"
+                    android:textSize="18sp"
+                    android:background="@drawable/customborder_dialog"
+                    android:text="Select To Date Time"/>
+
+                <!-- Date EditText -->
+                <EditText
+                    android:id="@+id/date_two"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Select Date"
+                    android:focusable="false"
+                    android:inputType="none"
+                    android:clickable="true"
+                    android:background="?android:attr/editTextBackground"/>
+
+                <!-- Time EditText -->
+                <EditText
+                    android:id="@+id/time_two"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:hint="Select Time"
+                    android:focusable="false"
+                    android:inputType="none"
+                    android:clickable="true"
+                    android:background="?android:attr/editTextBackground"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/old"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10sp"
+            android:text="View Via Time Stamp">
+
+        </Button>
+
     </LinearLayout>
 
 
@@ -62,7 +168,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_weight="0.7" >
+        android:layout_weight="1" >
 
 
 

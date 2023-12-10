@@ -2,6 +2,8 @@ package com.kushkumardhawan;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,8 +11,13 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -34,6 +41,7 @@ import com.kushkumardhawan.modal.VelocityData;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -49,6 +57,10 @@ public class RNNPrediction extends AppCompatActivity {
 
     Spinner channel;
 
+    private EditText dateOneEditText, timeOneEditText, dateTwoEditText, timeTwoEditText;
+    private Button viewViaTimeStampButton;
+    private Calendar calendar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +68,28 @@ public class RNNPrediction extends AppCompatActivity {
 
         // Retrieve the file name from the Intent
         String selectedFileName = getIntent().getStringExtra("FILE_NAME");
+
+        dateOneEditText = findViewById(R.id.date_one);
+        timeOneEditText = findViewById(R.id.time_one);
+        dateTwoEditText = findViewById(R.id.date_two);
+        timeTwoEditText = findViewById(R.id.time_two);
+
+        // Set up Calendar instance
+        calendar = Calendar.getInstance();
+
+        // Set onClickListener for Date and Time pickers
+        setDateTimePickerListeners();
+
+        viewViaTimeStampButton = findViewById(R.id.old);
+        viewViaTimeStampButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+
+            }
+        });
 
         combinedChart = findViewById(R.id.combinedChart);
         channel = findViewById(R.id.channel);
@@ -101,7 +135,27 @@ public class RNNPrediction extends AppCompatActivity {
                 }
                 // Do something with the selected value
                 //Toast.makeText(getApplicationContext(), "Selected: " + selectedValue, Toast.LENGTH_SHORT).show();
-               new LoadAndPlotRNNTask(RNNPrediction.this, combinedChart, assetManager, selectedValue, selectedFileName).execute();
+
+                String fromDate = getFormattedDateTime(dateOneEditText, timeOneEditText);
+                String toDate = getFormattedDateTime(dateTwoEditText, timeTwoEditText);
+
+                if(!fromDate.isEmpty() && !toDate.isEmpty()){
+
+                    /**
+                     * pass the date and Time too
+                     */
+                    Toast.makeText(RNNPrediction.this, fromDate + "\t" + toDate, Toast.LENGTH_SHORT).show();
+                    System.out.println(fromDate+":00");
+                    System.out.println(toDate+":00");
+                    new LoadAndPlotRNNTaskDateTime(RNNPrediction.this, combinedChart, assetManager, selectedValue, selectedFileName, fromDate+":00", toDate+":00").execute();
+
+                }else{
+                    new LoadAndPlotRNNTask(RNNPrediction.this, combinedChart, assetManager, selectedValue, selectedFileName).execute();
+
+                }
+
+
+
             }
 
             @Override
@@ -110,6 +164,82 @@ public class RNNPrediction extends AppCompatActivity {
             }
         });
     }
+
+    private void setDateTimePickerListeners() {
+        dateOneEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePicker(dateOneEditText);
+            }
+        });
+
+        timeOneEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTimePicker(timeOneEditText);
+            }
+        });
+
+        dateTwoEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePicker(dateTwoEditText);
+            }
+        });
+
+        timeTwoEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTimePicker(timeTwoEditText);
+            }
+        });
+    }
+
+    private void showDatePicker(final EditText editText) {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        calendar.set(year, month, dayOfMonth);
+                        updateEditText(editText);
+                    }
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+        );
+        datePickerDialog.show();
+    }
+
+    private void showTimePicker(final EditText editText) {
+        TimePickerDialog timePickerDialog = new TimePickerDialog(
+                this,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        calendar.set(Calendar.MINUTE, minute);
+                        updateEditText(editText);
+                    }
+                },
+                calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE),
+                false
+        );
+        timePickerDialog.show();
+    }
+
+    private void updateEditText(EditText editText) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        if (editText == dateOneEditText || editText == dateTwoEditText) {
+            editText.setText(dateFormat.format(calendar.getTime()));
+        } else if (editText == timeOneEditText || editText == timeTwoEditText) {
+            editText.setText(timeFormat.format(calendar.getTime()));
+        }
+    }
+
 
     public void plotInverseVelocityWithPrediction(List<VelocityData> velocityDataList) throws ParseException {
         if (velocityDataList == null || velocityDataList.isEmpty()) {
@@ -123,12 +253,18 @@ public class RNNPrediction extends AppCompatActivity {
 
         for (int i = 0; i < velocityDataList.size(); i++) {
             VelocityData modal = velocityDataList.get(i);
-            long timestampInMillis = convertDateStringToTimestamp(modal.getTimeStamp());
+//            long timestampInMillis = convertDateStringToTimestamp(modal.getTimeStamp());
+//            lineEntries.add(new Entry(timestampInMillis, modal.getInverseVelocity().floatValue()));
+
+            // Convert timestamp to a numerical value (you might want to use a timestamp formatter)
+            long timestampInMillis = convertTimestampToMillis(modal.getTimeStamp());
+
+            // Add an Entry with timestamp on the X-axis and deformationMax on the Y-axis
             lineEntries.add(new Entry(timestampInMillis, modal.getInverseVelocity().floatValue()));
             //scatterEntries.add(new Entry(timestampInMillis, modal.getInverseVelocity().floatValue()));
         }
 
-        long specificTimestamp = convertDateStringToTimestamp("12/17/2029 23:00");
+        long specificTimestamp = convertDateStringToTimestamp("17-12-2029 23:00:00");
         //lineEntries.add(new Entry(specificTimestamp, 0f));
         scatterEntries.add(new Entry(specificTimestamp, 0f));
 
@@ -222,8 +358,32 @@ public class RNNPrediction extends AppCompatActivity {
         combinedChart.invalidate();
     }
 
+
+    private String getFormattedDateTime(EditText dateEditText, EditText timeEditText) {
+        String dateText = dateEditText.getText().toString();
+        String timeText = timeEditText.getText().toString();
+
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+
+            Calendar dateTimeCalendar = Calendar.getInstance();
+            dateTimeCalendar.setTime(dateFormat.parse(dateText));
+            dateTimeCalendar.set(Calendar.HOUR_OF_DAY, timeFormat.parse(timeText).getHours());
+            dateTimeCalendar.set(Calendar.MINUTE, timeFormat.parse(timeText).getMinutes());
+            // Set seconds to 00
+            dateTimeCalendar.set(Calendar.SECOND, 0);
+
+            return dateFormat.format(dateTimeCalendar.getTime()) + " " + timeFormat.format(dateTimeCalendar.getTime());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+
     private static long convertDateStringToTimestamp(String dateString) throws ParseException {
-        SimpleDateFormat inputFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm", Locale.getDefault());
+        SimpleDateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault());
         Date date = inputFormat.parse(dateString);
         return date.getTime();
     }
@@ -277,5 +437,21 @@ public class RNNPrediction extends AppCompatActivity {
             handler.removeCallbacksAndMessages(null);
             isBlinking = false;
         }
+    }
+
+    private long convertTimestampToMillis(String timestamp) {
+        // Remove double quotes from the timestamp string
+        timestamp = timestamp.replace("\"", "");
+
+        // Implement your timestamp to milliseconds conversion logic
+        // Example: Using SimpleDateFormat
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+            Date date = sdf.parse(timestamp);
+            return date.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }
