@@ -227,9 +227,13 @@ public class LoadAndPlotDataTaskDateTime extends AsyncTask<Void, Void, List<Defo
 
                             double difference = value2 - value1;
                             double rc = (difference) / (value2 + value1);
-                            double deformation = 0.0188 * rc - 0.0142;
-
-                            deformationMap.put(waveformNumber, Math.abs(deformation));
+                            if(mux.equalsIgnoreCase("1001")||mux.equalsIgnoreCase("1002")||mux.equalsIgnoreCase("1003")||mux.equalsIgnoreCase("1004")){
+                                double deformation = 0.0188 * rc - 0.0142;
+                                deformationMap.put(waveformNumber, Math.abs(deformation));
+                            }else{
+                                double deformation = 0.0306 * rc + 0.158;
+                                deformationMap.put(waveformNumber, Math.abs(deformation));
+                            }
 
 //                            System.out.println("Timestamps: " + timestamp1 + " and " + timestamp2 +
 //                                    ", Mux: " + mux +
