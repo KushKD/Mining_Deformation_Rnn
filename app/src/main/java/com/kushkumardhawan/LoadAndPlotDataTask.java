@@ -13,6 +13,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.kushkumardhawan.modal.DeformationModal;
+import com.kushkumardhawan.modal.Distance;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -86,8 +87,86 @@ public class LoadAndPlotDataTask extends AsyncTask<Void, Void, List<DeformationM
         Map<String, Map<Integer, Double>> deformationData = calculateAndStoreDeformationForTimeInterval(
                 dataMap, mux, timestampsToCalculate, startWaveformNumber, endWaveformNumber);
 
-        //   System.out.println("Deformation Data: " + deformationData);
-        // Utilities.printNestedMap(deformationData);
+         //  System.out.println("Deformation Data: " + deformationData);
+         //Utilities.printNestedMap(deformationData);
+
+
+        /**
+         * Data for calculating the distance
+         * For Mux = 1001
+         */
+        // Create a list to store the Distance objects
+        ArrayList<Distance> distanceList = new ArrayList<>();
+        // Iterate over each timestamp in the outer map
+        for (String timestamp : deformationData.keySet()) {
+            // Get the inner map for the current timestamp
+            Map<Integer, Double> innerMap = deformationData.get(timestamp);
+
+            if (innerMap != null) {
+                // Sort the inner map based on keys (assuming keys represent time points)
+                TreeMap<Integer, Double> sortedInnerMap = new TreeMap<>(innerMap);
+
+                // Get the last 59 points
+                int totalPoints = sortedInnerMap.size();
+                int startPoint = Math.max(0, totalPoints - 59); // Adjust if total points are less than 59
+
+                Map<Integer, Double> last59Points = new HashMap<>();
+
+                // Iterate over the selected range and populate the last59Points map
+                for (int i = startPoint; i < totalPoints; i++) {
+                    int key = sortedInnerMap.keySet().toArray(new Integer[0])[i];
+                    double value = sortedInnerMap.get(key);
+                    last59Points.put(key, value);
+                }
+
+                // Find the maximum value among the last 59 points
+                // double maxDeformation = last59Points.values().stream().mapToDouble(Double::doubleValue).max().orElse(0.0);
+
+                // Apply the formula
+                // Find the maximum value among the last 59 points
+                double maxDeformation = last59Points.values().stream().mapToDouble(Double::doubleValue).max().orElse(0.0);
+
+                // Find totalPointsBeforeMax using a loop
+                int maxKey = -1;
+                boolean foundMaxKey = false;
+
+                for (int key : last59Points.keySet()) {
+                    if (last59Points.get(key) == maxDeformation) {
+                        maxKey = key;
+                        foundMaxKey = true;
+                        break; // Stop the loop when we find the key associated with the maximum value
+                    }
+                }
+
+                if (foundMaxKey) {
+                    // Apply the formula
+                    int totalPointsBeforeMax = 0;
+
+                    for (int key : last59Points.keySet()) {
+                        if (key < maxKey) {
+                            totalPointsBeforeMax++;
+                        }
+                    }
+
+                    double result = 0.1 * totalPointsBeforeMax;
+
+                    // Create a Distance object and add it to the list
+                    Distance distanceObject = new Distance(timestamp, result);
+                    distanceList.add(distanceObject);
+                } else {
+                    System.out.println("No key found for max value within the last 59 points.");
+                }
+            } else {
+                System.out.println("No data found for timestamp '" + timestamp + "'.");
+            }
+        }
+
+        System.out.println(distanceList.size());
+        // Print or process the distanceList
+        for (Distance distanceObject : distanceList) {
+            System.out.println("Timestamp: " + distanceObject.getTimestamp() + ", Distance: " + distanceObject.getDistance());
+        }
+
 
         Map<String, Map<Integer, Double>> maxDoubleMap = new TreeMap<>();
         for (Map.Entry<String, Map<Integer, Double>> entry : deformationData.entrySet()) {
@@ -224,20 +303,21 @@ public class LoadAndPlotDataTask extends AsyncTask<Void, Void, List<DeformationM
                             double difference = value2 - value1;
                             double rc = (difference) / (value2 + value1);
 
-                            //1,2,3,4
                             if(mux.equalsIgnoreCase("1001")||mux.equalsIgnoreCase("1002")||mux.equalsIgnoreCase("1003")||mux.equalsIgnoreCase("1004")){
                                 double deformation = 0.0188 * rc - 0.0142;
                                 deformationMap.put(waveformNumber, Math.abs(deformation));
+//                                System.out.println("Timestamps: " + timestamp1 + " and " + timestamp2 +
+//                                        ", Mux: " + mux +
+//                                        ", Waveform " + waveformNumber +
+//                                        ", Absolute Deformation: " + Math.abs(deformation));
                             }else{
                                 double deformation = 0.0306 * rc + 0.158;
                                 deformationMap.put(waveformNumber, Math.abs(deformation));
+//                                System.out.println("Timestamps: " + timestamp1 + " and " + timestamp2 +
+//                                        ", Mux: " + mux +
+//                                        ", Waveform " + waveformNumber +
+//                                        ", Absolute Deformation: " + Math.abs(deformation));
                             }
-
-
-//                            System.out.println("Timestamps: " + timestamp1 + " and " + timestamp2 +
-//                                    ", Mux: " + mux +
-//                                    ", Waveform " + waveformNumber +
-//                                    ", Absolute Deformation: " + Math.abs(deformation));
                         }
                     }
 

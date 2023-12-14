@@ -20,7 +20,7 @@
         tools:replace="android:allowBackup"
         tools:targetApi="31">
         <activity
-            android:name=".ChooseFile"
+            android:name=".DistanceGraph"
             android:alwaysRetainTaskState="true"
             android:exported="true"
             android:launchMode="singleTop"
@@ -28,6 +28,14 @@
             android:theme="@style/Theme.Design.Light.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
 
+        <activity
+            android:name=".ChooseFile"
+            android:alwaysRetainTaskState="true"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.Design.Light.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".RNNPrediction"
             android:alwaysRetainTaskState="true"

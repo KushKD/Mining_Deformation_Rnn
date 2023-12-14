@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private LineChart lineChart;
       String selectedValue = null;
 
-      FloatingActionButton rnnFab;
+      FloatingActionButton rnnFab , distance;
 
     Spinner channel;
 
@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
        // System.out.println(selectedFileName);
 
         rnnFab = findViewById(R.id.rnn);
+        distance = findViewById(R.id.distance);
 
 
         dateOneEditText = findViewById(R.id.date_one);
@@ -101,6 +102,20 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(mainIntent);
 
 
+            }
+        });
+
+
+
+        distance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /**
+                 * Show Distance Chart
+                 */
+                Intent mainIntent = new Intent(MainActivity.this, DistanceGraph.class);
+                mainIntent.putExtra("FILE_NAME", selectedFileName);
+                startActivity(mainIntent);
             }
         });
 
@@ -165,25 +180,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
-        /**
-         * Calculate Velocity
-         */
-//        for (int i = 0; i < modal.size(); i++) {
-//            Double deformationMax = modal.get(i).getDeformationMax();
-//            String TimeStamp = modal.get(i).getTimeStamp();
-//
-//            // Ensure that Velocity is not zero to avoid division by zero
-//            if (deformationMax != 0) {
-//                Double velocity = deformationMax / 300;
-//                Double inverseVelocity = 1 / velocity;
-//
-//                System.out.println("TimeStamp: " + TimeStamp +" Velocity: " + velocity + ", Inverse Velocity: " + inverseVelocity);
-//            } else {
-//                System.out.println("Cannot calculate inverse velocity because deformationMax is zero.");
-//            }
-//        }
 
 
     }
