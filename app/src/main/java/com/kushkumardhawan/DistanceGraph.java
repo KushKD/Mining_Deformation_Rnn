@@ -115,7 +115,7 @@ public class DistanceGraph extends AppCompatActivity {
         }
 
         // Creating a LineDataSet
-        LineDataSet dataSet = new LineDataSet(entries, "Total Distance (mm)");
+        LineDataSet dataSet = new LineDataSet(entries, "Total Distance (m)");
 
         if(selectedValue.equalsIgnoreCase("1001")){
             dataSet.setColor(Color.RED);

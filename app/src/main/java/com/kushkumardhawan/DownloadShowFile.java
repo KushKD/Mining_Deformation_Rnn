@@ -69,7 +69,7 @@ public class DownloadShowFile extends AppCompatActivity implements DownloadFileT
         String destinationDirectory = Environment.getExternalStorageDirectory().getPath() + "/my_directory";
 
         if(!AppStatus.getInstance(DownloadShowFile.this).isOnline()){
-            CD.showDialog(DownloadShowFile.this, "Please connect to Internet First if there is a downloading error. \n \nFile Will be automatically Downloaded form the Server. \n \n After Downloading is Completed, the file name will be shown in the list.  \n \n \n Please click the File and Proceed to view the Deformation Charts. \n \n \n Please enjoy your cup of Tea while the downloading is in process.");
+            CD.showDialog(DownloadShowFile.this, "Please connect to Internet First if there is a downloading error. \n \nFile Will be automatically Downloaded from the Server. \n \n After Downloading is Completed, the file name will be shown in the list.  \n \n \n Please click the File and Proceed to view the Deformation Charts. \n \n \n Please enjoy your cup of Tea while the downloading is in process.");
             DownloadFileTask downloadTask = new DownloadFileTask(this, this);
             downloadTask.execute(receivedUrl);
         }else{

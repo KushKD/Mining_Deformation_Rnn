@@ -285,9 +285,23 @@ public class LoadAndPlotRNNTaskDateTime extends AsyncTask<Void, Void, List<Veloc
 
                             double difference = value2 - value1;
                             double rc = (difference) / (value2 + value1);
-                            double deformation = 0.0188 * rc - 0.0142;
+                            if(mux.equalsIgnoreCase("1001")||mux.equalsIgnoreCase("1002")||mux.equalsIgnoreCase("1003")||mux.equalsIgnoreCase("1004")){
+                                double deformation = (rc + 0.0142)/0.0188;
+                                deformationMap.put(waveformNumber, Math.abs(deformation));
+//                                System.out.println("Timestamps: " + timestamp1 + " and " + timestamp2 +
+//                                        ", Mux: " + mux +
+//                                        ", Waveform " + waveformNumber +
+//                                        ", Absolute Deformation: " + Math.abs(deformation));
+                            }else{
+                                double deformation = ( rc - 0.158)/0.0306;
+                                deformationMap.put(waveformNumber, Math.abs(deformation));
+//                                System.out.println("Timestamps: " + timestamp1 + " and " + timestamp2 +
+//                                        ", Mux: " + mux +
+//                                        ", Waveform " + waveformNumber +
+//                                        ", Absolute Deformation: " + Math.abs(deformation));
+                            }
 
-                            deformationMap.put(waveformNumber, Math.abs(deformation));
+
 
 //                            System.out.println("Timestamps: " + timestamp1 + " and " + timestamp2 +
 //                                    ", Mux: " + mux +
